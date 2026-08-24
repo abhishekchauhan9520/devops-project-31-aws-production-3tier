@@ -1,0 +1,24 @@
+name: Terraform Validation
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.5
+      - run: terraform fmt -check
+      - run: terraform init -backend=false
+      - run: terraform validate
+      - run: cd .. && bash tests/test_structure.sh
+      - run: terraform plan -lock=false -input=false -var='db_password=ci-only-placeholder-123456'
