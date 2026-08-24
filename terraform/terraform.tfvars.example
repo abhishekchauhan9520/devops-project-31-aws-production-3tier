@@ -1,0 +1,2 @@
+aws_region = "ap-south-1"
+db_password = "REPLACE_WITH_A_SECRET_AT_APPLY_TIME"
